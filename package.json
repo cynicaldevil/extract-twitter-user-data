@@ -1,0 +1,11 @@
+{
+  "name": "extract-twitter-data",
+  "version": "1.0.0",
+  "description": "Extract twitter User data",
+  "main": "index.js",
+  "author": "Nikhil Shagrithaya",
+  "license": "MIT",
+  "dependencies": {
+    "twitter": "^1.7.1"
+  }
+}
