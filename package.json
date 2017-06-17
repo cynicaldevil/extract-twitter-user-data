@@ -1,7 +1,7 @@
 {
-  "name": "extract-twitter-data",
+  "name": "extract-twitter-user-data",
   "version": "1.0.0",
-  "description": "Extract twitter User data",
+  "description": "Extracts bio-data of large number of twitter users",
   "main": "index.js",
   "author": "Nikhil Shagrithaya",
   "license": "MIT",
