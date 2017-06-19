@@ -11,6 +11,7 @@ var client = new Twitter({
 });
 
 get_query_strs = (data) => {
+    console.log('Total users to extract data from: ', data.length);
     let arr = [];
     let i;
     let str = '';
@@ -33,15 +34,17 @@ fs.readFile(process.argv[2], 'utf8', (err, data) => {
     const user_names = data.split(/\r\n|\r|\n/);
     const user_str_arr = get_query_strs(user_names);
     let user_data = [];
-
+    let i = 0;
     let promise_objs = user_str_arr.map((user_str) => {
         const params = {screen_name: user_str};
 
         return client.get('users/lookup', params)
         .then((data) => {
+            console.log(i);
             let extract_data = data.map((user) => {
                 return {
                     name: user.name,
+                    screen_name: user.screen_name,
                     id: user.id,
                     location: user.location,
                     profile_image_url: user.profile_image_url,
@@ -50,19 +53,23 @@ fs.readFile(process.argv[2], 'utf8', (err, data) => {
                     url: user.url,
                     lang: user.lang,
                     followers_count: user.followers_count,
+                    followee_count: user.friends_count,
+                    listed_count: user.listed_count,
                     protected: user.protected,
                     time_zone: user.time_zone,
                     statuses_count: user.statuses_count,
                 };
             });
             user_data = user_data.concat(extract_data);
+            i++;
         })
         .catch((err) => console.log(err));
     });
 
     Promise.all(promise_objs).then(() => {
+        console.log('Total users from whom data was extracted: ', user_data.length);
         const json = JSON.stringify(user_data);
-        fs.writeFile(process.argv[2], json, 'utf8', (err) => {
+        fs.writeFile(process.argv[3], json, 'utf8', (err) => {
             if(err) throw err;
             console.log('Data written to file successfully!');
         });
